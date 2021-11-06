@@ -39,7 +39,16 @@ class HandleCollisionsAction(Action):
             bricks = cast["brick"] # Define result of impact on bricks
             speed = 1
             speed_list = [-speed, speed]
-            pass
+
+        # Collision on bricks
+
+        for brick in bricks:
+            if ball.get_position().equals(brick.get_position()):
+                    ball.set_floor()
+                    cast['brick'].remove(brick)
+                    self._verify  = False
+                    return
+        
 
             # Padle implementation
         for pad in paddle:
@@ -55,8 +64,12 @@ class HandleCollisionsAction(Action):
             
             self._verify = False
 
+
         else:
             self._verify = True
+
+
+ 
 
 
 
