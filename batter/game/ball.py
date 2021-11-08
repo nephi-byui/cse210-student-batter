@@ -38,12 +38,21 @@ class Ball(Actor):
         x_list = [-speed, speed]
         y_list = [-speed, 0, speed]
 
-        x = random.choice(x_list)
         if direction == "up":
+            x = random.choice(x_list)
             y = -1
         elif direction == "down":
+            x = random.choice(x_list)
             y = 1
-        else:
+        elif direction == "left":
+            x = -1
             y = random.choice(y_list)
+        elif direction == "right":
+            x = 1
+            y = random.choice(y_list)
+        else:
+            x = random.choice(x_list)
+            y = random.choice(y_list)
+
         velocity = Point(x, y)
         self.set_velocity(velocity)

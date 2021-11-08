@@ -50,9 +50,16 @@ class HandleCollisionsAction(Action):
             if ball_x in range (paddle_x_start,paddle_x_end) and ball_y == constants.PADDLE_Y_LEVEL - 1:
                 ball.bounce("up")
 
-            # make ball bounce off the edges
+            # make ball bounce off the top of the screen
             elif ball_y in [0,1]:
                 ball.bounce("down")
+
+            # make ball bounce off the left and right edges of the screen
+            elif ball_x in [0,1]:
+                ball.bounce("right")
+
+            elif ball_x in [constants.MAX_X-1, constants.MAX_X]:
+                ball.bounce("left")
 
             # kill balls that hit the kill zone, or bounce them if in Zen Mode
             elif ball.get_text() != "x" and ball_y >= constants.GAME_OVER_Y:
