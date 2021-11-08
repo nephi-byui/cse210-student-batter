@@ -50,6 +50,12 @@ class Ball(Actor):
         elif direction == "right":
             x = 1
             y = random.choice(y_list)
+        elif direction == "down-left":
+            x = 1
+            y = -1
+        elif direction == "down-right":
+            x = 1
+            y = 1
         else:
             x = random.choice(x_list)
             y = random.choice(y_list)

@@ -56,10 +56,10 @@ class HandleCollisionsAction(Action):
 
             # make ball bounce off the left and right edges of the screen
             elif ball_x in [0,1]:
-                ball.bounce("right")
+                ball.bounce("down-right")
 
             elif ball_x in [constants.MAX_X-1, constants.MAX_X]:
-                ball.bounce("left")
+                ball.bounce("down-left")
 
             # kill balls that hit the kill zone, or bounce them if in Zen Mode
             elif ball.get_text() != "x" and ball_y >= constants.GAME_OVER_Y:
