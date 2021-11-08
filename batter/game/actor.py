@@ -98,7 +98,7 @@ class Ball(Actor):
         """
         super().__init__()
 
-    def bounce2(self):
+    def bounce_up(self):
         """Makes the ball bounce in a random direction direction
         Args:
             self (Ball): an instance of Ball
@@ -108,15 +108,41 @@ class Ball(Actor):
         x = random.choice(speed_list)
         #y = random.randint(-speed, -1)
         y = random.choice(speed_list)
+        velocity = Point(abs(x), abs(y))
+        self.set_velocity(velocity)
+
+    def bounce(self,direction=""):
+
+        position = self.get_velocity()
+        x = position.get_x()
+        speed = 1
+        x_list = [-speed, speed]
+        y_list = [-speed, 0, speed]
+
+        x = random.choice(x_list)
+        if direction == "up":
+            y = -1
+        elif direction == "down":
+            y = 1
+        else:
+            y = random.choice(y_list)
         velocity = Point(x, y)
         self.set_velocity(velocity)
 
-    def bounce(self):
-        speed = 1
-        speed_list = [-speed, speed]
-        x = random.choice(speed_list)
-        #y = random.randint(-speed, -1)
-        y = random.choice(speed_list)
-        velocity = Point(abs(x), y)
-        self.set_velocity(velocity)
+class Message(Actor):
+    """The game over message, win or lose
+    """
+    def __init__(self):
+        """
+        The class constructor
+        Args:
+            self (Ball): an instance of Ball
+        """
+        super().__init__()
+        self._text = ""
 
+    def win(self):
+        self.set_text("\o/ YOU WIN! \o/")
+
+    def lose(self):
+        self.set_text("T_T YOU LOSE T_T")

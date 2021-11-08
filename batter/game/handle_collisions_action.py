@@ -15,12 +15,10 @@ class HandleCollisionsAction(Action):
         Controller
         
     Attributes:
-        _verify - checks collisions on movement frames against boolean  value
     """
 
     def __init__(self):
-        """HandleCollisionsAction class constructor
-        
+        """HandleCollisionsAction class constructor        
         Args:
             self -  Instance of HandleCOllisionAction
         """
@@ -36,91 +34,77 @@ class HandleCollisionsAction(Action):
         """
 
         paddle = cast["paddle"][0] # only one instance
-        ball = cast["ball"][0] # only one instance
-        bricks = cast["brick"]
+        #ball = cast["ball"][0] # only one instance
+        
+        balls = cast["ball"]
+        
         score = cast["score"][0] # only one instance
-        #speed = 1
-        #speed_list = [-speed, speed]
+        bricks = cast["brick"]
+        message = cast["message"][0]
 
-        ball_position = ball.get_position()
-        ball_x = ball_position.get_x()
-        ball_y = ball_position.get_y()
+        for ball in balls:
 
-        # BALL on BRICK collision
-        for brick in bricks:
-            brick_position = brick.get_position()
-            if ball_position.equals(brick_position):
-                    
-                    # add points
-                    score.add_points(1)
-                    score.refresh()
+            ball_position = ball.get_position()
+            ball_x = ball_position.get_x()
+            ball_y = ball_position.get_y()
 
-                    # make ball bounce
-                    ball.bounce()
+            paddle_position = paddle.get_position()
+            paddle_x_start = paddle_position.get_x()
+            paddle_x_end = paddle_x_start + constants.PADDLE_LENGTH
 
-                    # destroy brick
-                    cast['brick'].remove(brick)
-                    break
+            # IMMINENT BALL on PADDLE collision
+            # for a more realistic bounce, it should bounce before collision and never overlap                     
 
+            if ball_x in range (paddle_x_start,paddle_x_end) and ball_y == constants.PADDLE_Y_LEVEL - 1:
+                ball.bounce("up")
 
+            # make ball bounce off the edges
+            elif ball_y in [0,1]:
+                ball.bounce("down")
 
-        # IMMINENT BALL on PADDLE collision
-        # for a more realistic bounce, it should bounce before collision and never overlap                       
+            #elif ball_x == 0 or ball_y == 1 or ball_y == 1:
+            #    ball.bounce()
 
+            # if ball
+            elif ball_y >= constants.GAME_OVER_Y:
+                
+                if not constants.ZEN_MODE:
+                    ball.set_velocity(Point(0,0))
+                    ball.set_text("x")
 
-        paddle_position = paddle.get_position()
-        paddle_x_start = paddle_position.get_x() - 1
-        paddle_x_end = paddle_x_start + constants.PADDLE_LENGTH + 1
+                    message.lose()
 
-        if ball_x in range (paddle_x_start,paddle_x_end) and ball_y == constants.PADDLE_Y_LEVEL - 1:
-            ball.bounce()
-            #ball.bounce()
-            #x = random.choice(speed_list)
-            #y = random.randint(-speed, -1)
-            #velocity = Point(x, y)
-            #ball.set_velocity(velocity)
-
-        # make ball bounce off the edges
-        elif ball_x == 0 or ball_y == 1 or ball_y == constants.MAX_Y-1 or ball_y == constants.GAME_OVER_Y:
-            ball.bounce()
-
-        elif ball_y == constants.GAME_OVER_Y:
-            # GAME OVER
-            #sys.exit()
-
-            """
-            if ball.x .equals(above_pad):
-                x = random.choice(speed_list)
-                y = random.randint(-speed, -1)
-                velocity = Point(x, y)
-                ball.set_velocity(velocity)
-                #ball.bounce()
-                self._verify = False
-                #return            
-                # 
-            """
+                else:
+                    ball.bounce("up")
 
 
+            else:
+                # BALL on BRICK collision
+                for brick in bricks:
+                    brick_position = brick.get_position()
+                    if ball_position.equals(brick_position):
+                            
+                        # add points
+                        score.add_points(1)
+                        score.refresh()
 
-        # BALL collide with y-axis-GAME_OVER_Y
-        #ball_position = ball.get_position()
-        #ball_y = ball_position.get_y()
-        #if ball_y == constants.GAME_OVER_Y:
-        #    # GAME OVER
-        #    sys.exit()
+                        # make ball bounce
+                        ball.bounce()
+
+                        # destroy brick
+                        cast['brick'].remove(brick)
+                        
+                        current_score = score.get_score()
+                        if current_score == 280:
+                            message.win()
+                        
+                        break
+
+
+
+
+
 
  
 
-
-
-        
-        #...................................................................
-        #Commented code from solo project code
-        # marquee = cast["marquee"][0] # there's only one
-        # robot = cast["robot"][0] # there's only one
-        # artifacts = cast["artifact"]
-        # marquee.set_text("")
-        # for artifact in artifacts:
-        #     if robot.get_position().equals(artifact.get_position()):
-        #         description = artifact.get_description()
-        #         marquee.set_text(description) 
+ 

@@ -1,7 +1,7 @@
 import random
 from game import constants
 from game.director import Director
-from game.actor import Actor, Ball
+from game.actor import Actor, Ball, Message
 from game.score import Score
 from game.point import Point
 from game.control_actors_action import ControlActorsAction
@@ -21,7 +21,7 @@ def main(screen):
     paddle = Actor()
     cast["paddle"] = [paddle]
 
-    x = int(constants.MAX_X / 2)
+    x = int( (constants.MAX_X - constants.PADDLE_LENGTH) / 2)
     y = int(constants.PADDLE_Y_LEVEL)
     position = Point(x, y)    
     paddle.set_text("=" * constants.PADDLE_LENGTH)
@@ -39,18 +39,18 @@ def main(screen):
             cast["brick"].append(brick)
 
     # ball
-    ball = Ball()
-    cast["ball"] = [ball]
-
-    x = int(constants.MAX_X / 2)
-    y = int(constants.MAX_Y / 2)
-    position = Point(x, y)
-    velocity = Point(1, -1)
-    
-    ball.set_text("O")
-    ball.set_position(position)
-    ball.set_velocity(velocity)
-  
+    cast["ball"] = []
+    for i in range(constants.BALL_COUNT):
+        ball = Ball()
+        cast["ball"].append(ball)
+        x = int(constants.MAX_X / random.randint(1,3) )
+        y = int(constants.MAX_Y / 2)
+        position = Point(x, y)
+        velocity = Point(1, -1)
+        
+        ball.set_text("O")
+        ball.set_position(position)
+        ball.set_velocity(velocity)
 
     # score object
     score = Score()
@@ -62,17 +62,14 @@ def main(screen):
     score.set_position(position)
     score.set_text(f"Score: {score.score}")
 
-    # walls
-    wall = Actor()
-    cast["wall"] = [wall]
-    x = 0
-    y = 1
+    # message object
+    message = Message()
+    cast["message"] = [message]
+    x = int((constants.MAX_X - 16)/ 2)
+    y = int(constants.MAX_Y / 2)
     position = Point(x, y)
-    wall.set_position(position)
-    wall.set_text("" * constants.MAX_X)
+    message.set_position(position)
 
-    
-    
     # create the script {key: tag, value: list}
     script = {}
 

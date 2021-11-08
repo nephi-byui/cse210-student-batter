@@ -26,3 +26,13 @@ class Score(Actor):
             none
         """
         self._text = f"{self._prefix}{self._score}"
+
+    def get_score(self):
+        """
+        Returns the currenct score
+        Args:
+            self (Score):   an instance of Score
+        Returns:
+            score
+        """
+        return self._score
