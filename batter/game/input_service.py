@@ -18,23 +18,25 @@ class InputService:
         """The class constructor."""
         self._screen = screen
         self._keys = {}
-        #self._keys[119] = Point(0, -1) # w
-        #self._keys[115] = Point(0, 1) # s
 
         speed_factor = constants.PADDLE_SPEED
+        self._keys[-1] = "exit" # Esc
+        self._keys[27] = "exit" # Esc
         self._keys[97] = Point( -speed_factor, 0) # a
         self._keys[100] = Point( speed_factor, 0) # d
         
     def get_direction(self):
-        """Gets the selected direction for the given player.
+        """Gets the selected direction for the given player, or exits when Esc is pressed
 
         Returns:
             Point: The selected direction.
         """
         direction = Point(0, 0)
         event = self._screen.get_event()
-        if isinstance(event, KeyboardEvent):
-            if event.key_code == 27:
-                sys.exit()
+            
+        if isinstance(event, KeyboardEvent):            
             direction = self._keys.get(event.key_code, Point(0, 0))
-        return direction
+        if direction == "exit":
+            sys.exit()
+        else:
+            return direction
