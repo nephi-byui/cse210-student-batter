@@ -1,7 +1,5 @@
 from game import constants
-#from game import actor, constants
 from game.point import Point
-#from game.move_actors_action import MoveActorsAction
 from game.action import Action
 
 class HandleCollisionsAction(Action):
@@ -71,10 +69,8 @@ class HandleCollisionsAction(Action):
                     live_ball_count.count = live_ball_count.count - 1
                     if live_ball_count.count == 0:
                         message.lose()
-
                 else:
                     ball.bounce("up")
-
 
             else:
                 # BALL on BRICK collision

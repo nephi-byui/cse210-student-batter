@@ -28,9 +28,9 @@ class OutputService:
         #self._screen.highlight(0, 1, 80, 19, bg=6)
 
         self._screen.clear_buffer(7, 0, 0)
-        self._screen.print_at("-" * constants.MAX_X, 0, 0, 7)
-        self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 7)
-        #self._screen.highlight(0, 1, 80, 19, bg=6)
+        self._screen.print_at("-" * constants.MAX_X, 0, 0, 0, bg=6)
+        self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 0, bg=6)
+        self._screen.highlight(0, 1, 80, 19, bg=6)
         #self._screen.set_
 
     def draw_actor(self, actor):
@@ -43,7 +43,7 @@ class OutputService:
         position = actor.get_position()
         x = position.get_x()
         y = position.get_y()
-        self._screen.print_at(text, x, y, 7) # WHITE
+        self._screen.print_at(text, x, y, 0, bg=6) # WHITE
 
     def draw_actors(self, actors):
         """Renders the given list of actors on the screen.
