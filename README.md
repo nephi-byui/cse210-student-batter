@@ -38,5 +38,10 @@ root                    (project root folder)
 * Asciimatics 1.12.0
 
 ## Authors
----
-* # TODO: Add your names and emails here
+* Alan Crisanto - alanvcrisanto@gmail.com
+* Tianna DeSpain - des17015@byui.edu
+* Nephi Malit - byui@nephi.malit.me
+* Tatenda Felix Mukaro - muk21002@byui.edu
+
+## Basic Features
+
