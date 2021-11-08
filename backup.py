@@ -1,8 +1,10 @@
 import random
+from game import constants
 from game import actor, constants
 from game.point import Point
 from game.move_actors_action import MoveActorsAction
 from game.action import Action
+import sys
 
 # Update on the solo collisions class for week 8 - batter-collision
 
@@ -13,7 +15,7 @@ class HandleCollisionsAction(Action):
         Controller
         
     Attributes:
-        _verify - checks collisions  on movement frames against boolean  value
+        _verify - checks collisions on movement frames against boolean  value
     """
 
     def __init__(self):
@@ -34,36 +36,55 @@ class HandleCollisionsAction(Action):
             cast (dict): The game actors {key: tag, value: list}.
         """
         if self._verify:
-            paddle = cast["paddle"] # there's only one
-            ball = cast["ball"][0] # there's only one
-            bricks = cast["brick"] # Define result of impact on bricks
+            paddle = cast["paddle"][0] # only one instance
+            ball = cast["ball"][0] # only one instance
+            bricks = cast["brick"]
+            score = cast["score"][0] # only one instance
             speed = 1
             speed_list = [-speed, speed]
 
-        # Collision on bricks
+            # BALL on BRICK collision
+            for brick in bricks:
+                if ball.get_position().equals(brick.get_position()):
+                        
+                        # add points
+                        score.add_points(1)
+                        score.refresh()
 
-        for brick in bricks:
-            if ball.get_position().equals(brick.get_position()):
-                    ball.set_floor()
-                    cast['brick'].remove(brick)
-                    self._verify  = False
-                    return
-        
+                        ball.bounce()
+                        # ball_velocity = ball.get_velocity()
+                        #new_velocity = ball_velocity.reverse()
+                        #ball.set_velocity(new_velocity)
+                        #
+                        cast['brick'].remove(brick)
+                        self._verify  = False
 
-            # Padle implementation
-        for pad in paddle:
-            if ball.get_position().equals(pad.get_position()):
+            # IMMINENT BALL on PADDLE collision
+            # for a more realistic bounce, it should bounce before collision and never overlap
+
+            ball_position = ball.get_position()
+            ball_x = ball_position.get_x()
+
+            paddle_position = paddle.get_position()
+            paddle_x = paddle_position.get_x()
+
+            if ball.get_position().equals(above_pad):
                 x = random.choice(speed_list)
                 y = random.randint(-speed, -1)
                 velocity = Point(x, y)
                 ball.set_velocity(velocity)
-
+                #ball.bounce()
                 self._verify = False
-                return
+                #return            
 
-            
-            self._verify = False
 
+
+            # BALL collide with y-axis-GAME_OVER_Y
+            ball_position = ball.get_position()
+            ball_y = ball_position.get_y()
+            if ball_y == constants.GAME_OVER_Y:
+                # GAME OVER
+                sys.exit()
 
         else:
             self._verify = True

@@ -1,5 +1,6 @@
 from game import constants
 from game.point import Point
+import random
 
 class Actor:
     """A visible, moveable thing that participates in the game. The responsibility of Actor is to keep track of its appearance, position 
@@ -85,3 +86,37 @@ class Actor:
             position (Point): The given velocity.
         """
         self._velocity = velocity
+
+class Ball(Actor):
+    """A class of Actor that plays the Ball
+    """
+    def __init__(self):
+        """
+        The class constructor
+        Args:
+            self (Ball): an instance of Ball
+        """
+        super().__init__()
+
+    def bounce2(self):
+        """Makes the ball bounce in a random direction direction
+        Args:
+            self (Ball): an instance of Ball
+        """
+        speed = 1
+        speed_list = [-speed, speed]
+        x = random.choice(speed_list)
+        #y = random.randint(-speed, -1)
+        y = random.choice(speed_list)
+        velocity = Point(x, y)
+        self.set_velocity(velocity)
+
+    def bounce(self):
+        speed = 1
+        speed_list = [-speed, speed]
+        x = random.choice(speed_list)
+        #y = random.randint(-speed, -1)
+        y = random.choice(speed_list)
+        velocity = Point(abs(x), y)
+        self.set_velocity(velocity)
+
