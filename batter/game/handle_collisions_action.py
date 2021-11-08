@@ -1,12 +1,8 @@
-import random
 from game import constants
-from game import actor, constants
+#from game import actor, constants
 from game.point import Point
-from game.move_actors_action import MoveActorsAction
+#from game.move_actors_action import MoveActorsAction
 from game.action import Action
-import sys
-
-# Update on the solo collisions class for week 8 - batter-collision
 
 class HandleCollisionsAction(Action):
     """A code template for handling collisions. The responsibility of this class of objects is to update the game state when actors collide.
@@ -23,24 +19,20 @@ class HandleCollisionsAction(Action):
             self -  Instance of HandleCOllisionAction
         """
 
-
-
-    #Execution
     def execute(self, cast):
         """Executes the action using the given actors.  
-        * Collision or Bouncing on bricks , bat and wall
+        * Ball colliding with the paddle, bricks or edges of the screen
         Args:
             cast (dict): The game actors {key: tag, value: list}.
         """
 
-        paddle = cast["paddle"][0] # only one instance
-        #ball = cast["ball"][0] # only one instance
-        
+        paddle = cast["paddle"][0] # only one instance        
         balls = cast["ball"]
-        
         score = cast["score"][0] # only one instance
         bricks = cast["brick"]
         message = cast["message"][0]
+
+        live_ball_count = cast["live-ball-count"][0]
 
         for ball in balls:
 
@@ -52,7 +44,7 @@ class HandleCollisionsAction(Action):
             paddle_x_start = paddle_position.get_x()
             paddle_x_end = paddle_x_start + constants.PADDLE_LENGTH
 
-            # IMMINENT BALL on PADDLE collision
+            # IMMINENT BALL on PADDLE collision            
             # for a more realistic bounce, it should bounce before collision and never overlap                     
 
             if ball_x in range (paddle_x_start,paddle_x_end) and ball_y == constants.PADDLE_Y_LEVEL - 1:
@@ -62,17 +54,16 @@ class HandleCollisionsAction(Action):
             elif ball_y in [0,1]:
                 ball.bounce("down")
 
-            #elif ball_x == 0 or ball_y == 1 or ball_y == 1:
-            #    ball.bounce()
-
-            # if ball
-            elif ball_y >= constants.GAME_OVER_Y:
+            # kill balls that hit the kill zone, or bounce them if in Zen Mode
+            elif ball.get_text() != "x" and ball_y >= constants.GAME_OVER_Y:
                 
                 if not constants.ZEN_MODE:
                     ball.set_velocity(Point(0,0))
                     ball.set_text("x")
-
-                    message.lose()
+                    
+                    live_ball_count.count = live_ball_count.count - 1
+                    if live_ball_count.count == 0:
+                        message.lose()
 
                 else:
                     ball.bounce("up")

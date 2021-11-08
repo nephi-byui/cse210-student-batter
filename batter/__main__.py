@@ -1,7 +1,9 @@
 import random
 from game import constants
 from game.director import Director
-from game.actor import Actor, Ball, Message
+from game.actor import Actor
+from game.ball import Ball
+from game.message import Message
 from game.score import Score
 from game.point import Point
 from game.control_actors_action import ControlActorsAction
@@ -51,6 +53,12 @@ def main(screen):
         ball.set_text("O")
         ball.set_position(position)
         ball.set_velocity(velocity)
+
+    # start the live ball count
+    live_ball_count = Actor()
+    live_ball_count.count = constants.BALL_COUNT
+    cast["live-ball-count"] = [live_ball_count]
+
 
     # score object
     score = Score()

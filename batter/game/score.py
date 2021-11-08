@@ -1,7 +1,15 @@
 from game.actor import Actor
 
 class Score(Actor):
+    """ An Actor responsible for displaying the score
+    args:
+        Actor: the parent class
+    """
     def __init__(self) -> None:
+        """ The class constructor
+        Args:
+            self (Score):   an instance of Score
+        """
         super().__init__()
         self._score = 0
         self._prefix = "Score: "
