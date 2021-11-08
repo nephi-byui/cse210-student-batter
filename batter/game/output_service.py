@@ -13,31 +13,31 @@ class OutputService:
     """
 
     def __init__(self, screen):
-        """The class constructor.
-        
+        """The class constructor.        
         Args:
             screen (Screen): An Asciimatics Screen.
         """
         self._screen = screen
         
     def clear_screen(self):
-        """Clears the Asciimatics buffer for the next rendering.""" 
-        #self._screen.clear_buffer(7, 0, 0)
-        #self._screen.print_at("-" * constants.MAX_X, 0, 0, 28, bg=11)
-        #self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 28, bg=11)
-        #self._screen.highlight(0, 1, 80, 19, bg=6)
-
+        """Clears the Asciimatics buffer for the next rendering.
+        Args:
+            self (Output Service) an instance of OutputService
+        """ 
         self._screen.clear_buffer(7, 0, 0)
         self._screen.print_at("-" * constants.MAX_X, 0, 0, 0, bg=6)
         self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 0, bg=6)
         self._screen.highlight(0, 1, 80, 19, bg=6)
-        #self._screen.set_
+
 
     def draw_actor(self, actor):
         """Renders the given actor's text on the screen.
 
         Args:
+            self (Output Service) an instance of OutputService
             actor (Actor): The actor to render.
+        Returns:
+            none
         """ 
         text = actor.get_text()
         position = actor.get_position()
@@ -49,11 +49,19 @@ class OutputService:
         """Renders the given list of actors on the screen.
 
         Args:
+            self (Output Service) an instance of OutputService
             actors (list): The actors to render.
+        Returns:
+            none
         """ 
         for actor in actors:
             self.draw_actor(actor)
     
     def flush_buffer(self):
-        """Renders the screen.""" 
+        """Renders the screen.
+        Args:
+            self (Output Service) an instance of OutputService
+        Returns:
+            none
+        """ 
         self._screen.refresh()    
